@@ -9,7 +9,7 @@
             <h1 id="logo">SmartSpend</h1>
             <nav id="navigation">
                 <a href="Acceuil.html">Home</a>
-                <a href="">Login</a>
+                <a href="login.php">Login</a>
                 <a href="inscription.php">Sign Up</a>
                 <a href="">Contact</a>
             </nav>

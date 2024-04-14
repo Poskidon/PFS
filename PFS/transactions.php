@@ -62,9 +62,8 @@ $result = $conn->query($sql_select);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartSpend - Espace Personnel</title>
-    <link rel="stylesheet" href="espace_personnel.css">
+    <link rel="stylesheet" href="transaction.css">
     <style>
-        /* Style du tableau */
         .transactions-table {
             width: 100%;
             border-collapse: collapse;
@@ -89,7 +88,6 @@ $result = $conn->query($sql_select);
             background-color: #ddd;
         }
 
-        /* Style des boutons */
         .transactions-table button {
             padding: 5px 10px;
             cursor: pointer;
@@ -103,7 +101,6 @@ $result = $conn->query($sql_select);
             background-color: #0056b3;
         }
 
-        /* Style du formulaire de modification */
         .modification-form {
             display: none;
             background-color: #f9f9f9;
@@ -142,7 +139,7 @@ $result = $conn->query($sql_select);
         }
 
         .modification-form.show {
-            display: table-row;
+            display: block;
         }
     </style>
 </head>
@@ -160,66 +157,62 @@ $result = $conn->query($sql_select);
         </nav>
     </header>
     <main>
-        <!-- Affichage des transactions -->
         <section id="transactions">
             <h2>Mes Transactions</h2>
-            <table class="transactions-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Montant</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Boucle pour afficher les transactions -->
-                    <?php
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $row["Date"] . "</td>";
-                            echo "<td>" . $row["Montant"] . "</td>";
-                            echo "<td>" . $row["Description"] . "</td>";
-                            echo "<td>";
-                            // Bouton de modification
-                            echo "<button class='modifier-btn' data-transaction-id='" . $row["TransactionID"] . "'>Modifier</button>";
-                            // Bouton de suppression
-                            echo "<form action='' method='post'>";
-                            echo "<input type='hidden' name='transaction_id' value='" . $row["TransactionID"] . "'>";
-                            echo "<button type='submit' name='supprimer'>Supprimer</button>";
-                            echo "</form>";
-                            echo "</td>";
-                            echo "</tr>";
-                            // Formulaire de modification
-                            echo "<tr class='modification-form' id='form-" . $row["TransactionID"] . "'>";
-                            echo "<td colspan='4'>";
-                            echo "<form action='' method='post'>";
-                            echo "<input type='hidden' name='transaction_id' value='" . $row["TransactionID"] . "'>";
-                            echo "<label for='nouveau_montant'>Nouveau Montant :</label>";
-                            echo "<input type='number' id='nouveau_montant' name='nouveau_montant' required>";
-                            echo "<label for='nouvelle_date'>Nouvelle Date :</label>";
-                            echo "<input type='date' id='nouvelle_date' name='nouvelle_date' required>";
-                            echo "<label for='nouvelle_description'>Nouvelle Description :</label>";
-                            echo "<input type='text' id='nouvelle_description' name='nouvelle_description' required>";
-                            echo "<button type='submit' name='modifier'>Modifier</button>";
-                            echo "</form>";
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='4'>Aucune transaction disponible.</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<div class='transaction'>";
+                    echo "<table class='transactions-table'>";
+                    echo "<thead>";
+                    echo "<tr>";
+                    echo "<th>Date</th>";
+                    echo "<th>Montant</th>";
+                    echo "<th>Description</th>";
+                    echo "<th>Actions</th>";
+                    echo "</tr>";
+                    echo "</thead>";
+                    echo "<tbody>";
+                    echo "<tr>";
+                    echo "<td>" . $row["Date"] . "</td>";
+                    echo "<td>" . $row["Montant"] . "</td>";
+                    echo "<td>" . $row["Description"] . "</td>";
+                    echo "<td>";
+                    echo "<button class='modifier-btn' data-transaction-id='" . $row["TransactionID"] . "'>Modifier</button>";
+                    echo "<form action='' method='post'>";
+                    echo "<input type='hidden' name='transaction_id' value='" . $row["TransactionID"] . "'>";
+                    echo "<button type='submit' name='supprimer'>Supprimer</button>";
+                    echo "</form>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "<tr class='modification-form' id='form-" . $row["TransactionID"] . "'>";
+                    echo "<td colspan='4'>";
+                    echo "<form action='' method='post'>";
+                    echo "<input type='hidden' name='transaction_id' value='" . $row["TransactionID"] . "'>";
+                    echo "<label for='nouveau_montant'>Nouveau Montant :</label>";
+                    echo "<input type='number' id='nouveau_montant' name='nouveau_montant' required>";
+                    echo "<label for='nouvelle_date'>Nouvelle Date :</label>";
+                    echo "<input type='date' id='nouvelle_date' name='nouvelle_date' required>";
+                    echo "<label for='nouvelle_description'>Nouvelle Description :</label>";
+                    echo "<input type='text' id='nouvelle_description' name='nouvelle_description' required>";
+                    echo "<button type='submit' name='modifier'>Modifier</button>";
+                    echo "</form>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</tbody>";
+                    echo "</table>";
+                    echo "</div>";
+                }
+            } else {
+                echo "<p>Aucune transaction disponible.</p>";
+            }
+            ?>
         </section>
     </main>
     <footer>
         <p>© 2024 SmartSpend. Tous droits réservés.</p>
     </footer>
     <script>
-        // Script pour afficher le formulaire de modification lors du clic sur le bouton "Modifier"
         document.addEventListener('DOMContentLoaded', function() {
             var modifierBtns = document.querySelectorAll('.modifier-btn');
             modifierBtns.forEach(function(btn) {
@@ -237,5 +230,3 @@ $result = $conn->query($sql_select);
     </script>
 </body>
 </html>
-
-

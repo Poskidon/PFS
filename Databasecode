@@ -61,3 +61,38 @@ CREATE TABLE Alertes (
     DateHeure DATETIME,
     FOREIGN KEY (UserID) REFERENCES Utilisateurs(UserID)
 );
+-- Insert default categories into the Categories table
+INSERT INTO Categories (Nom) VALUES
+('Nourriture'),
+('Logement'),
+('Transport'),
+('Loisirs'),
+('Santé'),
+('Éducation'),
+('Factures'),
+('Vêtements'),
+('Épargne'),
+('Divertissement'),
+('Voyage'),
+('Assurance'),
+('Impôts'),
+('Remboursements de dettes'),
+('Autres');
+CREATE TABLE Transactions (
+    TransactionID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    Montant DECIMAL(10, 2),
+    Date DATE,
+    Description TEXT,
+    FOREIGN KEY (UserID) REFERENCES Utilisateurs(UserID)
+);
+CREATE TABLE MonthlyBudgets (
+    BudgetID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    MonthYear DATE, -- Storing only the first day of each month
+    BudgetAmount DECIMAL(10, 2),
+    SavingsGoal DECIMAL(10, 2),
+    FOREIGN KEY (UserID) REFERENCES Utilisateurs(UserID) ON DELETE CASCADE
+);
+
+
